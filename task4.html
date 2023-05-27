@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <input type="number" class="input__1" />
+        <input type="number" class="input__2" />
+        <button class="button">click</button>
+      </div>
+    </div>
+
+    <script>
+      const div = document.querySelector(".container");
+      const first = document.querySelector(".input__1");
+      const second = document.querySelector(".input__2");
+      const button = document.querySelector(".button");
+
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (
+          !isNaN(parseFloat(first.value)) &&
+          !isNaN(parseFloat(second.value)) &&
+          first.value >= 100 &&
+          first.value <= 300 &&
+          second.value >= 100 &&
+          second.value <= 300
+        ) {
+          if (document.querySelector(".error")) {
+            document.querySelector(".error").remove();
+          }
+          if (document.querySelector("img")) {
+            document.querySelector("img").remove();
+          }
+
+          fetch(`https://picsum.photos/${first.value}/${second.value}`)
+            .then((response) => {
+              const imageUrl = response.url;
+              console.log(response.url);
+              const image = document.createElement("img");
+              image.src = imageUrl;
+
+              div.appendChild(image);
+            })
+
+            .catch(() => {
+              console.log("error");
+            });
+        } else {
+          if (document.querySelector("img")) {
+            document.querySelector("img").remove();
+          }
+          if (!document.querySelector(".error")) {
+            const err = document.createElement("p");
+            err.classList.add("error");
+            err.textContent = "Одно из чисел вне диапазона от 100 до 300";
+            div.append(err);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
