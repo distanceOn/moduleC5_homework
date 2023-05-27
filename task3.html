@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <input type="number" class="input" />
+        <button class="button">click</button>
+      </div>
+    </div>
+
+    <script>
+      const request = new XMLHttpRequest();
+
+      request.onload = () => {
+        console.log(
+          `Статус ${request.status}; Результат: ${request.response} \n `
+        );
+      };
+
+      request.onerror = () => {
+        console.log("Ошибка");
+      };
+
+      const button = document.querySelector(".button");
+      const input = document.querySelector(".input");
+
+      button.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (input.value >= 1 && input.value <= 10) {
+          if (document.querySelector(".error")) {
+            document.querySelector(".error").remove();
+          }
+          request.open(
+            "get",
+            `https://picsum.photos/v2/list?limit=${input.value}`
+          );
+          request.send();
+        } else {
+          if (!document.querySelector(".error")) {
+            const a = document.createElement("p");
+            a.classList.add("error");
+            a.textContent = "Число вне диапазона от 1 до 10";
+            document.querySelector(".container").append(a);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
