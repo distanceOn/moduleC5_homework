@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const xmlString = `<list>
+  <student>
+    <name lang="en">
+      <first>Ivan</first>
+      <second>Ivanov</second>
+    </name>
+    <age>35</age>
+    <prof>teacher</prof>
+  </student>
+  <student>
+    <name lang="ru">
+      <first>Петр</first>
+      <second>Петров</second>
+    </name>
+    <age>58</age>
+    <prof>driver</prof>
+  </student>
+</list>`;
+
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(xmlString, "text/xml");
+
+      const studentElements = xmlDoc.getElementsByTagName("student");
+
+      const students = [];
+      for (let i = 0; i < studentElements.length; i++) {
+        const studentElement = studentElements[i];
+
+        const nameElement = studentElement.getElementsByTagName("name")[0];
+        const firstName =
+          nameElement.getElementsByTagName("first")[0].textContent;
+        const lastName =
+          nameElement.getElementsByTagName("second")[0].textContent;
+        const lang = nameElement.getAttribute("lang");
+
+        const age = parseInt(
+          studentElement.getElementsByTagName("age")[0].textContent
+        );
+        const prof = studentElement.getElementsByTagName("prof")[0].textContent;
+
+        students.push({
+          name: `${firstName} ${lastName}`,
+          age: age,
+          prof: prof,
+          lang: lang,
+        });
+      }
+
+      const result = {
+        list: students,
+      };
+
+      console.log(result);
+    </script>
+  </body>
+</html>
